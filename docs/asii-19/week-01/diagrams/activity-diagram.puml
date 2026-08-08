@@ -1,0 +1,159 @@
+@startuml
+left to right direction
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+'=========================
+' ACTORES
+'=========================
+
+actor "Usuario del HIS" as Usuario
+actor "Técnico de\nLaboratorio" as Tecnico
+actor "Médico" as Medico
+actor "Control de acceso\n(HIS)" as Seguridad
+
+Usuario <|-- Tecnico
+Usuario <|-- Medico
+
+'=========================
+' SISTEMA
+'=========================
+
+rectangle "ASII-19\nIngreso de Resultados de Laboratorio" {
+
+usecase "UC-01\nConsultar resultados\npendientes" as UC01
+
+usecase "UC-02\nRegistrar resultado\nde laboratorio" as UC02
+
+usecase "UC-03\nCorregir resultado\npendiente" as UC03
+
+usecase "UC-04\nPublicar resultado\nvalidado" as UC04
+
+usecase "UC-05\nConsultar resultado\npublicado" as UC05
+
+usecase "UC-06\nVerificar autenticación\ny permisos" as UC06
+
+}
+
+'=========================
+' ASOCIACIONES
+'=========================
+
+Tecnico --> UC01
+Tecnico --> UC02
+Tecnico --> UC03
+Tecnico --> UC04
+
+Medico --> UC05
+
+Seguridad --> UC06
+
+'=========================
+' INCLUDE
+'=========================
+
+UC01 ..> UC06 : <<include>>
+UC02 ..> UC06 : <<include>>
+UC03 ..> UC06 : <<include>>
+UC04 ..> UC06 : <<include>>
+UC05 ..> UC06 : <<include>>
+
+note bottom of UC06
+El Sistema Hospitalario
+verifica:
+
+• Usuario autenticado
+
+• Permisos del usuario
+
+• Acceso autorizado
+
+antes de ejecutar cualquier
+operación sobre resultados
+de laboratorio.
+end note
+
+@enduml
+
+
+Inicio
+   │
+Consultar resultados pendientes
+   │
+Seleccionar resultado
+   │
+Registrar resultado
+   │
+Validar información
+   │
+¿Información correcta?
+ ┌───────┴────────┐
+ │                │
+No              Sí
+ │                │
+Corregir      Guardar
+ │                │
+ └───────┬────────┘
+         │
+Publicar resultado
+         │
+Resultado disponible
+         │
+Fin
+
+@startuml
+
+title ASII-19 - Captura y corrección controlada de resultados pendientes
+
+skinparam shadowing false
+
+start
+
+:Consultar resultados pendientes;
+
+:Seleccionar resultado;
+
+:Registrar resultado de laboratorio;
+
+:Validar información ingresada;
+
+if (¿Información correcta?) then (Sí)
+
+:Guardar resultado;
+
+:Publicar resultado;
+
+:Resultado disponible para consulta;
+
+stop
+
+else (No)
+
+:Corregir resultado;
+
+:Validar nuevamente;
+
+if (¿Corrección correcta?) then (Sí)
+
+:Guardar resultado;
+
+:Publicar resultado;
+
+:Resultado disponible para consulta;
+
+stop
+
+else (No)
+
+:Solicitar nueva corrección;
+
+stop
+
+endif
+
+endif
+
+@enduml
+
