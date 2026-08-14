@@ -1,0 +1,71 @@
+@startuml
+title ASII-19 — Diseño DESPUÉS (aplicando ISP)
+caption Contratos segregados: cada cliente depende solo de su interfaz
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+
+package "App\\Services\\LabResults\\Contracts" {
+  interface "PendingResultsProvider" as IProvider {
+    + pendingFor(tenantId: string): array
+  }
+  interface "ResultEntryWriter" as IEntry {
+    + create(input: ResultInput): PublishedResultDetail
+  }
+  interface "PendingResultCorrector" as ICorrect {
+    + correct(input: ResultCorrectionInput): PublishedResultDetail
+  }
+  interface "ResultPublisher" as IPublish {
+    + publish(tenantId: string, resultId: int, userId: int): PublishedResultDetail
+  }
+  interface "PublishedResultReader" as IRead {
+    + find(tenantId: string, resultId: int): PublishedResultDetail
+  }
+  interface "ResultValidator" as IValidate {
+    + validateForEntry(payload: array): ResultInput
+  }
+}
+
+package "App\\Http\\Controllers\\Api\\V1\\LabResults" {
+  class PendingResultsController
+  class LabResultEntryController
+  class LabResultCorrectionController
+  class LabResultPublishController
+  class PublishedResultsController
+}
+
+PendingResultsController ..> IProvider
+LabResultEntryController ..> IEntry
+LabResultCorrectionController ..> ICorrect
+LabResultPublishController ..> IPublish
+PublishedResultsController ..> IRead
+
+IEntry ..> IValidate
+ICorrect ..> IValidate
+
+package "Implementaciones (LabResultsServiceProvider)" {
+  class EloquentPendingResultsProvider
+  class LabResultEntryService
+  class LabResultCorrectionService
+  class ResultPublicationService
+  class EloquentPublishedResultReader
+  class StrictResultValidator
+}
+
+EloquentPendingResultsProvider ..|> IProvider
+LabResultEntryService ..|> IEntry
+LabResultCorrectionService ..|> ICorrect
+ResultPublicationService ..|> IPublish
+EloquentPublishedResultReader ..|> IRead
+StrictResultValidator ..|> IValidate
+
+note bottom of IPublish
+  Beneficios ISP
+  • 1 contrato, 1 responsabilidad
+  • cada cliente usa 1 método
+  • sustituible y testeable
+    de forma aislada
+end note
+
+@enduml
