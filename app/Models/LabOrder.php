@@ -45,4 +45,14 @@ class LabOrder extends Model
     {
         return $this->belongsTo(SoapNote::class, 'soap_note_id');
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(LabOrderItem::class, 'lab_order_id');
+    }
+
+    public function samples()
+    {
+        return $this->hasMany(Sample::class, 'lab_order_id');
+    }
 }

@@ -1,0 +1,41 @@
+@startuml
+title ASII-19 — Diseño ANTES (violación de ISP)
+caption Interfaz monolítica: cada cliente depende de todos los métodos
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+
+interface "LaboratoryResultManager" as IManager {
+  + pending(tenantId: string): array
+  + register(input: array): void
+  + correct(input: array): void
+  + publish(tenantId: string, resultId: int, userId: int): void
+  + showPublished(tenantId: string, resultId: int): array
+  + validate(input: array): void
+}
+
+class PendingResultsController
+class LabResultEntryController
+class LabResultCorrectionController
+class LabResultPublishController
+class PublishedResultsController
+class ResultValidatorWorker
+
+PendingResultsController ..> IManager
+LabResultEntryController ..> IManager
+LabResultCorrectionController ..> IManager
+LabResultPublishController ..> IManager
+PublishedResultsController ..> IManager
+ResultValidatorWorker ..> IManager
+
+note right of IManager
+  **Problemas ISP**
+  • 6 métodos, 6 clientes
+  • cada cliente usa 1,
+    pero depende de 6
+  • un cambio en cualquier
+    método afecta a todos
+end note
+
+@enduml

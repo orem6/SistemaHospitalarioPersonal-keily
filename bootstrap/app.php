@@ -12,11 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withProviders([
+        \App\Providers\LabResultsServiceProvider::class,
+    ])
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'tenant' => \App\Http\Middleware\TenantMiddleware::class,
             'jwt.auth' => \App\Http\Middleware\JwtAuth::class,
             'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
