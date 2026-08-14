@@ -8,6 +8,10 @@
 
 **Rama de trabajo:** `feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6`
 
+**Repositorio compartido con el docente:** https://github.com/orem6/SistemaHospitalario-keily.git
+
+**Commit evaluado / etiqueta:** `PENDIENTE` (ver `03-evidencias-ejecucion.md` tras el commit y push)
+
 **Módulo oficial:**
 Ingreso de resultados de laboratorio.
 
@@ -47,6 +51,14 @@ Esta carpeta contiene la documentación de la segunda semana del proyecto.
 - `04-guia-defensa-oral.md`
   - Guía de preparación para la defensa oral del entregable.
 
+- `05-conclusion-bibliografia.md`
+  - Conclusión (qué se logró, decisión relevante, limitación y cómo la evidencia demuestra el cumplimiento).
+  - Bibliografía mínima y cita exacta de la fuente oficial sobre ISP.
+
+- `06-guia-entrega-final.md`
+  - Pasos para commitear, subir, registrar el hash, armar el PDF/DOCX y verificar la entrega.
+  - Lista de comprobación final para la defensa.
+
 ## Diagramas
 
 Los diagramas PlantUML editables se encuentran en la carpeta:
@@ -72,6 +84,8 @@ diagrams/images/
 | Criterios de aceptación (BDD) | ✅ |
 | Aplicación de ISP (antes/después) | ✅ |
 | Diagramas ISP (antes/después) | ✅ |
+| Conclusión y bibliografía | ✅ |
+| Guía de entrega final | ✅ |
 | Evidencia de ejecución | ✅ |
 | Evidencia Git | ✅ |
 | Guía de defensa oral | ✅ |
