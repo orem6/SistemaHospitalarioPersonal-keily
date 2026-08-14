@@ -59,19 +59,26 @@ git tag v1-asii19-isp
 
 ## PASO 3 — SUBIR AL REPOSITORIO
 
-Tu rama trackea a `nuevo` (tu repo personal compartido `SistemaHospitalario-keily.git`), así que un push simple basta:
+Tu repo personal compartido es el remoto **`individual`** (`https://github.com/orem6/SistemaHospitalarioPersonal-keily.git`). El remoto `nuevo` apunta a un repositorio que **no existe** (`SistemaHospitalario-keily.git`), así que **no lo uses**.
+
+Sube tu rama al repo personal:
 
 ```powershell
-git push
+git push -u individual feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6
+```
+
+Sube también tu rama al repo del equipo (origin) si tienes permisos:
+
+```powershell
 git push origin feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6
 ```
 
-El segundo comando sube también al repo del equipo si tienes permisos; si te da "permission denied", ignóralo sin problema.
+> Si el push a `origin` da "permission denied", no es un problema: la entrega se hace contra tu repo compartido `individual`. En `origin` el flujo obligatorio es **PR hacia `develop`**, nunca hacia `main` (ver `docs/worktree-guide.md`).
 
 Sube la etiqueta si la creaste:
 
 ```powershell
-git push --tags
+git push individual --tags
 ```
 
 > La URL de tu repo compartido ya está registrada en la portada del README.
@@ -95,7 +102,7 @@ git push --tags
    por el hash real:
 
    ```
-   **Commit evaluado / etiqueta:** `abcd123` (ver enlace: https://github.com/orem6/SistemaHospitalario-keily/commit/abcd123)
+   **Commit evaluado / etiqueta:** `abcd123` (ver enlace: https://github.com/orem6/SistemaHospitalarioPersonal-keily/commit/abcd123)
    ```
 
 3. Actualiza `03-evidencias-ejecucion.md` en la sección "Evidencia Git" con el hash del commit y el `git log --oneline` real.
@@ -105,7 +112,7 @@ git push --tags
    ```powershell
    git add -A
    git commit -m "ASII-19: registra hash de commit en portada y evidencia git"
-   git push
+   git push individual feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6
    ```
 
 ---
@@ -182,9 +189,9 @@ git add -A
 git status
 git commit -m "ASII-19: implementa ingreso de resultados de laboratorio con principio ISP"
 git tag v1-asii19-isp
-git push
+git push -u individual feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6
 git push origin feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6
-git push --tags
+git push individual --tags
 git log --oneline -3
 ```
 
@@ -194,4 +201,8 @@ Después: actualizar `README.md` y `03-evidencias-ejecucion.md` con el hash, re-
 
 ## NOTA IMPORTANTE
 
-Si en cualquier paso Git te pide credenciales, usa tu **Personal Access Token** de GitHub como contraseña (no tu contraseña normal). Si el push a `origin` falla por permisos, no es un problema: la entrega se hace contra **tu repositorio compartido `nuevo`**, que ya está configurado como destino por defecto.
+Si en cualquier paso Git te pide credenciales, usa tu **Personal Access Token** de GitHub como contraseña (no tu contraseña normal).
+
+- **No uses el remoto `nuevo`** (apunta a `SistemaHospitalario-keily.git`, que no existe y provoca `Repository not found`).
+- Tu repo personal compartido es **`individual`** (`SistemaHospitalarioPersonal-keily.git`).
+- En `origin` el PR va hacia **`develop`**, nunca hacia `main` (regla del worktree-guide).

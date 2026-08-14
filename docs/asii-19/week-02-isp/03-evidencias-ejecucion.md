@@ -133,6 +133,8 @@ La rama de trabajo es:
 feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6
 ```
 
+El repositorio compartido con el docente es **https://github.com/orem6/SistemaHospitalarioPersonal-keily.git** (remoto `individual`); el repositorio del equipo es **https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026.git** (remoto `origin`).
+
 El worktree local contiene los archivos nuevos y las modificaciones de la implementación. El último commit existente del worktree es de la Semana 1 (diagramas UML); los cambios de la Semana 2 están en el árbol de trabajo y **no han sido commiteados ni empujados** a repositorios remotos.
 
 ## 5.2. Archivos sin seguimiento (nuevos) — principales

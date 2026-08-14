@@ -8,7 +8,7 @@
 
 **Rama de trabajo:** `feature/asii-19-ingreso-de-resultados-de-laboratorio-orem6`
 
-**Repositorio compartido con el docente:** https://github.com/orem6/SistemaHospitalario-keily.git
+**Repositorio compartido con el docente:** https://github.com/orem6/SistemaHospitalarioPersonal-keily.git
 
 **Commit evaluado / etiqueta:** `PENDIENTE` (ver `03-evidencias-ejecucion.md` tras el commit y push)
 
