@@ -1,0 +1,51 @@
+@startuml secuencia_correccion
+title Secuencia — Corrección versionada (n + 1, append-only)
+autonumber
+
+actor "Técnico" as Tec
+participant "LabResultV2Controller" as Ctl
+participant "CorregirResultadoUseCase" as UC
+participant "PoliticaCorreccion" as Pol
+participant "EloquentVersionResultadoRepository\n<<append-only>>" as VR
+participant "ValidadorContenidoResultado" as Val
+database "lab_result_versions" as DB
+
+Tec -> Ctl: PATCH /api/v1/lab-results/v2/muestras/{id}/correccion\n(motivo ≥10 chars, nuevo contenido)
+Ctl -> UC: ejecutar(CorregirResultadoCommand)
+
+UC -> Pol: assertMotivoValido(motivo)
+alt motivo vacío (dominio)
+  Pol --> UC: MotivoCorreccionInvalidoException
+  Ctl --> Tec: 422 MOTIVO_INVALIDO
+else motivo OK
+  UC -> VR: vigentePorMuestra(muestraId)
+  VR -> DB: SELECT ... ORDER BY version_number DESC LIMIT 1
+  alt sin versión previa
+    UC -> Pol: assertExisteResultadoActual(null, id)
+    Pol --> UC: ResultadoInexistenteException
+    Ctl --> Tec: 422 RESULTADO_INEXISTENTE
+  else hay versión vigente v(n)
+    UC -> Val: validar(definicion, nuevoContenido)
+    alt contenido inválido
+      Val --> UC: Tipo/UnidadInvalida...
+      Ctl --> Tec: 422
+    else nuevoContenido.igualA(vigente.contenido)
+      UC --> Ctl: ResultadoSinCambiosException
+      Ctl --> Tec: 422 SIN_CAMBIOS
+    else contenido válido y distinto
+      UC -> VR: registrar(VersionResultado::correccion(\n  muestra, v(n), nuevo, motivo, ahora))\n// version_number = n+1, corrige_a_version = n
+      VR -> DB: INSERT nueva fila  == NUNCA UPDATE ni DELETE ==
+      DB --> VR: id
+      UC --> Ctl: VersionResultado v(n+1)
+      Ctl --> Tec: 201 {version_number: n+1, corrige_a_version: n}\n"la versión anterior se conserva"
+
+      == Consulta posterior ==
+      Tec -> Ctl: GET /historial/{id}
+      Ctl -> VR: historialPorMuestra(id)
+      VR -> DB: SELECT ORDER BY version_number ASC
+      VR --> Ctl: [v1 intacta, ..., v(n+1) vigente]
+      Ctl --> Tec: 200 historial completo + vigente
+    end
+  end
+end
+@enduml

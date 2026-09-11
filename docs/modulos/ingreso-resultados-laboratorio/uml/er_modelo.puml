@@ -1,0 +1,93 @@
+@startuml er_modelo
+title Modelo de datos — cambios de la etapa 2 (PostgreSQL-ready)
+skinparam linetype ortho
+
+entity tenants {
+  * id : uuid <<PK>>
+  --
+  slug : string
+  name : string
+}
+
+entity lab_tests {
+  * id : bigint <<PK>>
+  --
+  tenant_id : uuid <<FK tenants>>
+  name : string
+  code : string(20) <<NUEVO etapa 2, nullable>>
+  result_type : string(10) <<NUEVO etapa 2, default NUMERICO>>
+  unit : string nullable
+  reference_min / reference_max
+  critical_min / critical_max
+}
+
+entity samples {
+  * id : bigint <<PK>>
+  --
+  tenant_id : uuid <<FK tenants>>
+  lab_order_id : bigint <<FK lab_orders>>
+  barcode : string
+  sample_type : string
+  status : string <<semana 2, intacto>>
+  acceptance_status : string(10) <<NUEVO etapa 2, index>>
+  rejection_reason : string(500) <<NUEVO etapa 2, nullable>>
+  lab_test_id : bigint <<NUEVO etapa 2, FK lab_tests>>
+  collected_at / received_at
+}
+
+entity lab_orders {
+  * id : bigint <<PK>>
+  --
+  tenant_id : uuid <<FK tenants>>
+  code : string
+  patient_id : bigint
+  status / priority
+}
+
+entity users {
+  * id : bigint <<PK>>
+  --
+  tenant_id : uuid <<FK tenants>>
+  email : string
+}
+
+entity lab_result_versions <<NUEVO etapa 2>> {
+  * id : bigint <<PK>>
+  --
+  tenant_id : uuid <<FK tenants, index compuesto>>
+  # sample_id : bigint <<FK samples, restrictOnDelete>>
+  lab_test_id : bigint <<FK lab_tests, nullable>>
+  entered_by : bigint <<FK users>>
+  version_number : uint >= 1
+  result_type : string(10)
+  numeric_value : decimal(12,3) nullable
+  text_value : text nullable
+  unit : string(20) nullable
+  is_abnormal : bool
+  is_critico : bool
+  corrected_from_version : uint nullable
+  correction_reason : text nullable
+  resulted_at : timestamp
+  --
+  UNIQUE (tenant_id, sample_id, version_number)
+}
+
+lab_tests ||--o{ samples : "materializa"
+tenants ||--o{ samples
+tenants ||--o{ lab_tests
+tenants ||--o{ lab_result_versions
+samples ||--o{ lab_result_versions : "versiones append-only"
+users ||--o{ lab_result_versions : "entered_by"
+
+note bottom of lab_result_versions
+  APPEND-ONLY: ninguna operación UPDATE ni DELETE.
+  Vigente = fila con MAX(version_number).
+  corrected_from_version apunta a la versión origen.
+end note
+
+note right of samples::acceptance_status
+  REGLA CENTRAL: solo ACEPTADA
+  admite resultados.
+  RECHAZADA exige rejection_reason.
+end note
+@enduml

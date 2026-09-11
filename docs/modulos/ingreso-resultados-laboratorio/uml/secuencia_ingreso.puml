@@ -1,0 +1,54 @@
+@startuml secuencia_ingreso
+title Secuencia — Ingreso de resultado (versión 1)
+autonumber
+
+actor "Técnico" as Tec
+participant "LabResultV2Controller" as Ctl
+participant "IngresarResultadoUseCase" as UC
+participant "EloquentTransactionManager" as Tx
+participant "PoliticaIngresoResultado" as Pol
+participant "ValidadorContenidoResultado" as Val
+participant "EloquentMuestraReader\n<<MuestraReaderInterface>>" as MR
+participant "EloquentPruebaReader\n<<PruebaReaderInterface>>" as PR
+participant "EloquentVersionResultadoRepository\n<<VersionResultadoRepositoryInterface>>" as VR
+database "PostgreSQL / SQLite" as DB
+
+Tec -> Ctl: POST /api/v1/lab-results/v2\n(X-Tenant-ID, JWT, sample_id, tipo, valor, unidad)
+Ctl -> Ctl: validate() (formato HTTP)
+Ctl -> UC: ejecutar(IngresarResultadoCommand)
+
+UC -> Tx: ejecutar(callback)
+Tx -> MR: obtenerPorId(muestraId)
+MR -> DB: SELECT samples WHERE id
+DB --> MR: fila muestra
+MR --> UC: MuestraSnapshot (o null)
+
+alt muestra inexistente o de otro tenant
+  UC --> Ctl: MuestraNoEncontradaException
+  Ctl --> Tec: 404 MUESTRA_NO_ENCONTRADA
+else estado != ACEPTADA
+  UC -> Pol: assertMuestraPermiteIngreso(muestra)
+  Pol --> UC: MuestraRechazadaException / MuestraNoAceptadaException
+  Ctl --> Tec: 422 MUESTRA_RECHAZADA / MUESTRA_NO_ACEPTADA
+else ya tiene resultado vigente
+  UC -> Pol: assertSinResultadoVigente(vigente, barcode)
+  Pol --> UC: ResultadoYaRegistradoException
+  Ctl --> Tec: 409 RESULTADO_YA_REGISTRADO
+else flujo feliz
+  UC -> PR: obtenerPorId(pruebaId)
+  PR --> UC: PruebaDefinition (tipo esperado + unidad canónica)
+  UC -> Val: validar(definicion, ContenidoResultado::crear(...))
+  alt tipo o unidad inválidos
+    Val --> UC: TipoResultadoInvalidoException / UnidadInvalidaException
+    Ctl --> Tec: 422 TIPO_RESULTADO_INVALIDO / UNIDAD_INVALIDA
+  else contenido válido
+    UC -> VR: registrar(VersionResultado::capturaInicial(...))
+    VR -> DB: INSERT lab_result_versions (version_number = 1)
+    DB --> VR: id
+    UC -> VR: obtenerPorId(id)
+    VR --> UC: VersionResultado persistida
+    UC --> Ctl: VersionResultado v1
+    Ctl --> Tec: 201 {version_number: 1, ...}
+  end
+end
+@enduml
