@@ -1,0 +1,42 @@
+name: ASII PR Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate-pr:
+    name: Validate ASII PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure PR has a useful description
+        run: |
+          BODY='${{ github.event.pull_request.body }}'
+          if [ -z "$BODY" ] || [ ${#BODY} -lt 80 ]; then
+            echo "ERROR: completá la plantilla del PR con evidencia del módulo."
+            exit 1
+          fi
+
+      - name: Ensure branch naming follows ASII workflow
+        run: |
+          BRANCH='${{ github.head_ref }}'
+          if echo "$BRANCH" | grep -qE '^(feature|fix|docs|test|chore|refactor)/asii-[0-9]{2}-[a-z0-9._-]+$'; then
+            echo "Branch name OK: $BRANCH"
+          else
+            echo "ERROR: usá ramas tipo feature/asii-03-pacientes-glendi20"
+            exit 1
+          fi
+
+      - name: Block student PRs directly to main
+        if: github.base_ref == 'main'
+        run: |
+          AUTHOR='${{ github.actor }}'
+          ADMINS='rortizs Josuemart555 joshuacirilo'
+          if echo "$ADMINS" | grep -qw "$AUTHOR"; then
+            echo "Admin PR to main allowed: $AUTHOR"
+          else
+            echo "ERROR: los PR de estudiantes deben apuntar a develop, no a main."
+            exit 1
+          fi

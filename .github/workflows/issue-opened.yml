@@ -1,0 +1,43 @@
+name: ASII Issue Lifecycle
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label-new-issue:
+    name: Label new ASII issue
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add tracking labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['asii', 'status:needs-review']
+            });
+
+      - name: Add workflow reminder
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Issue ASII registrado.
+
+            Recordatorio de flujo:
+            1. Trabajá desde \`origin/develop\`.
+            2. Creá worktree y rama \`feature/asii-XX-slug-usuario\`.
+            3. Adjuntá evidencia semanal en este issue.
+            4. Abrí PR hacia \`develop\` cuando haya una unidad revisable.
+
+            No cierres el issue manualmente si todavía falta evidencia o integración.`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
