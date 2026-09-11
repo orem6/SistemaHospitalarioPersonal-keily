@@ -1,0 +1,47 @@
+@startuml
+
+title ASII-19 - Registro y publicación de resultados de laboratorio
+
+actor "Técnico de Laboratorio" as Tecnico
+participant "Interfaz del Sistema" as UI
+participant "Módulo de Resultados" as Sistema
+database "Base de Datos" as BD
+actor "Médico" as Medico
+
+Tecnico -> UI : Consultar resultados pendientes
+UI -> Sistema : Solicitar resultados pendientes
+Sistema -> BD : Obtener resultados pendientes
+BD --> Sistema : Lista de resultados
+Sistema --> UI : Mostrar resultados
+UI --> Tecnico : Lista de resultados pendientes
+
+Tecnico -> UI : Registrar resultado
+UI -> Sistema : Enviar resultado
+Sistema -> Sistema : Validar información
+
+alt Información correcta
+
+Sistema -> BD : Guardar resultado
+BD --> Sistema : Confirmación
+
+Sistema -> BD : Publicar resultado
+BD --> Sistema : Resultado publicado
+
+Sistema --> UI : Confirmación
+UI --> Tecnico : Resultado publicado correctamente
+
+else Información incorrecta
+
+Sistema --> UI : Mostrar errores
+UI --> Tecnico : Solicitar corrección
+
+end
+
+Medico -> UI : Consultar resultado publicado
+UI -> Sistema : Solicitar resultado
+Sistema -> BD : Buscar resultado
+BD --> Sistema : Resultado publicado
+Sistema --> UI : Mostrar resultado
+UI --> Medico : Resultado disponible
+
+@enduml
