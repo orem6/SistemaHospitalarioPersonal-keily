@@ -22,3 +22,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Etapa 1 - bases de datos locales del modulo
+etapa1-base-mvc/database/*.sqlite
+etapa1-base-mvc/.phpunit.result.cache
