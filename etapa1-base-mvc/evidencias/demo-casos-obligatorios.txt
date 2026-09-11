@@ -1,0 +1,49 @@
+
+==============================================================================
+ESTADO INICIAL (datos ficticios)
+==============================================================================
+  DEM-BAR-0001  estado=ACEPTADA  prueba_id=1 paciente_ref=bbbbbbbb-bbbbÔÇª
+  DEM-BAR-0002  estado=RECHAZADA prueba_id=2 paciente_ref=bbbbbbbb-bbbbÔÇª (motivo: Muestra hemolizada (dato ficticio de demostraci├│n))
+  DEM-BAR-0003  estado=PENDIENTE prueba_id=3 paciente_ref=bbbbbbbb-bbbbÔÇª
+  DEM-BAR-0004  estado=ACEPTADA  prueba_id=1 paciente_ref=bbbbbbbb-bbbbÔÇª
+
+==============================================================================
+CASO 1 ┬À Muestra ACEPTADA -> ingreso correcto del resultado
+==============================================================================
+  [OK] Resultado almacenado: v1 [NUMERICO] 14.5 g/dL
+
+==============================================================================
+CASO 2 ┬À Muestra RECHAZADA -> rechazo controlado del ingreso
+==============================================================================
+  [OK] Rechazo controlado: La muestra DEM-BAR-0002 est├í RECHAZADA (motivo: Muestra hemolizada (dato ficticio de demostraci├│n)); no se pueden ingresar resultados para muestras rechazadas.
+  [OK] Versiones almacenadas para la muestra rechazada: 0 (esperado: 0)
+
+==============================================================================
+CASO 3a ┬À Valor num├®rico INV├üLIDO ("abc") sobre muestra aceptada pendiente
+==============================================================================
+  [OK] Rechazo controlado: El valor del resultado debe ser un n├║mero v├ílido.
+
+==============================================================================
+CASO 3b ┬À UNIDAD no v├ílida (mmol/L en lugar de g/dL)
+==============================================================================
+  [OK] Rechazo controlado: La unidad 'mmol/L' no es v├ílida para la prueba 'Hemoglobina'; la unidad can├│nica es g/dL.
+  [OK] Versiones almacenadas tras los intentos inv├ílidos: 0 (esperado: 0)
+
+==============================================================================
+CASO 4 ┬À Correcci├│n versionada (crea v2, conserva v1)
+==============================================================================
+  Antes de corregir : v1 [NUMERICO] 14.5 g/dL
+  [OK] Nueva versi├│n creada: v2 [NUMERICO] 13.8 g/dL
+       corrected_from_version=1, motivo="Error de transcripci├│n: el valor correcto es 13.8 g/dL"
+
+==============================================================================
+CONSERVACI├ôN ┬À Historial completo tras la correcci├│n
+==============================================================================
+  Total de filas en lab_result_versions para la muestra: 2 (esperado: 2)
+  v1 = v1 [NUMERICO] 14.5 g/dL capturada=2026-08-22 04:48:13 -> conservada (intacta)
+  v2 = v2 [NUMERICO] 13.8 g/dL capturada=2026-08-22 04:48:13 -> VIGENTE
+  [OK] La versi├│n 1 se CONSERVA con su valor original 14.5 g/dL (no fue sobrescrita).
+
+==============================================================================
+DEMO COMPLETADA
+==============================================================================
