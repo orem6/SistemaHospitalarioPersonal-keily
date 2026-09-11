@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Leer README antes de abrir un issue
+    url: https://github.com/compilations-teams/sistema-hospitalario-integrado-SistenasII-2026/blob/main/README.md
+    about: Revisá asignación, worktree obligatorio, cronograma y Definition of Done.
