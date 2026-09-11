@@ -1,0 +1,32 @@
+@startuml estados_resultado
+title Máquina de estados — muestra y resultado versionado
+
+state "Muestra" as M {
+  state "PENDIENTE\n(sin decisión)" as M0
+  state "ACEPTADA" as M1
+  state "RECHAZADA\n(rejection_reason)" as M2
+  [*] --> M0 : recepción (semana 2)
+  M0 --> M1 : aceptar
+  M0 --> M2 : rechazar con motivo
+  M2 --> [*]
+}
+
+state "Resultado de la muestra" as R {
+  state "sin resultado" as R0
+  state "v1 vigente" as R1
+  state "v(n) + correcciones" as Rn
+  R0 --> R1 : POST /v2\n(solo si ACEPTADA)
+  R1 --> Rn : PATCH /correccion\n(motivo obligatorio)
+  Rn --> Rn : nuevas correcciones\n(version_number + 1)
+
+  note right of Rn
+    APPEND-ONLY: v1..v(n-1) quedan
+    intactas y consultables vía
+    GET /historial/{sampleId}.
+    Vigente = MAX(version_number).
+  end note
+}
+
+M1 --> R0 : habilita captura
+M2 --> R0 : bloqueado\n(422 MUESTRA_RECHAZADA)
+@enduml

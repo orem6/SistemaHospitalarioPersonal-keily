@@ -1,0 +1,75 @@
+@startuml componentes
+title Componentes — capas y puertos (Etapa 2)
+skinparam componentStyle rectangle
+
+package "Presentation" {
+  [LabResultV2Controller] as Ctl
+  [routes/api.php (/v2)] as Rts
+  [TenantMiddleware + jwt.auth + role:TecnicoLab] as Mw
+}
+
+package "Application" {
+  [IngresarResultadoUseCase] as UC1
+  [CorregirResultadoUseCase] as UC2
+  [ListarResultadosPendientesUseCase] as UC3
+  [ConsultarHistorialUseCase] as UC4
+}
+
+package "Domain" {
+  [Políticas + Validador\n(reglas de negocio)] as Dom
+  interface "MuestraReaderInterface" as P1
+  interface "PruebaReaderInterface" as P2
+  interface "VersionResultadoRepositoryInterface" as P3
+  interface "TransactionManagerInterface" as P4
+}
+
+package "Infrastructure" {
+  [EloquentMuestraReader] as A1
+  [EloquentPruebaReader] as A2
+  [EloquentVersionResultadoRepository\n(append-only: INSERT/SELECT)] as A3
+  [EloquentTransactionManager] as A4
+}
+
+database "PostgreSQL / SQLite" as DB
+package "Semana 2 (intacto)" {
+  [Endpoints ISP /lab-results/*] as Old
+}
+
+Rts --> Mw --> Ctl
+Ctl --> UC1
+Ctl --> UC2
+Ctl --> UC3
+Ctl --> UC4
+
+UC1 ..> Dom
+UC2 ..> Dom
+UC1 --> P1
+UC1 --> P2
+UC1 --> P3
+UC1 --> P4
+UC2 --> P1
+UC2 --> P2
+UC2 --> P3
+UC3 --> P1
+UC4 --> P1
+UC4 --> P2
+UC4 --> P3
+
+P1 ..> A1 : <<implements>>
+P2 ..> A2 : <<implements>>
+P3 ..> A3 : <<implements>>
+P4 ..> A4 : <<implements>>
+
+A1 --> DB
+A2 --> DB
+A3 --> DB
+A4 --> DB
+
+note bottom of P3
+  Repository Pattern real:
+  el puerto solo expone lo que
+  el módulo necesita; sin CRUD
+  genérico ni operaciones de
+  actualización/borrado.
+end note
+@enduml

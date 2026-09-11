@@ -1,0 +1,110 @@
+@startuml clases_dominio
+title Dominio del módulo — clases principales (Etapa 2)
+skinparam classAttributeIconSize 0
+
+package "Domain" {
+  enum TipoResultado {
+    NUMERICO
+    TEXTO
+  }
+
+  enum EstadoAceptacion {
+    PENDIENTE
+    ACEPTADA
+    RECHAZADA
+    +desdeValor(?string) EstadoAceptacion
+    +permiteIngresarResultados() bool
+  }
+
+  class MuestraSnapshot <<readonly>> {
+    +id: int
+    +tenantId: string
+    +barcode: string
+    +pruebaId: ?int
+    +estadoAceptacion: EstadoAceptacion
+    +motivoRechazo: ?string
+    +collectadaEn: ?string
+  }
+
+  class ContenidoResultado <<value object>> {
+    +MAX_LONGITUD_TEXTO = 500
+    +tipo: TipoResultado
+    +valorNumerico: ?float
+    +valorTexto: ?string
+    +unidad: ?string
+    +{static} crear(string,?string,?string,?string) ContenidoResultado
+    +{static} desdeAlmacenamiento(...) ContenidoResultado
+    +igualA(self) bool
+  }
+
+  class PruebaDefinition <<readonly>> {
+    +id: int
+    +code: string
+    +name: string
+    +tipoEsperado: TipoResultado
+    +unidad: ?string
+  }
+
+  class VersionResultado <<readonly, inmutable>> {
+    +id: ?int
+    +muestraId: int
+    +pruebaId: int
+    +numeroVersion: int
+    +contenido: ContenidoResultado
+    +corrigeAVersion: ?int
+    +motivoCorreccion: ?string
+    +esAnormal: bool
+    +esCritico: bool
+    +resultadaEn: ?string
+    +{static} capturaInicial(muestra, contenido, fecha) VersionResultado
+    +{static} correccion(muestra, anterior, nuevo, motivo, fecha) VersionResultado
+    +esCorreccion() bool
+  }
+
+  class PoliticaIngresoResultado <<service>> {
+    +{static} assertMuestraPermiteIngreso(muestra) void
+    +{static} assertSinResultadoVigente(vigente, barcode) void
+  }
+
+  class PoliticaCorreccion <<service>> {
+    +{static} assertMotivoValido(?motivo) void
+    +{static} assertExisteResultadoActual(?vigente, muestraId) void
+  }
+
+  class ValidadorContenidoResultado <<service>> {
+    +validar(definicion, contenido) void
+  }
+
+  abstract class DomainRuleException <<abstract>>
+
+  interface MuestraReaderInterface <<puerto>> {
+    +obtenerPorId(int) ?MuestraSnapshot
+    +pendientesDeCaptura() MuestraSnapshot[]
+  }
+
+  interface PruebaReaderInterface <<puerto>> {
+    +obtenerPorId(int) ?PruebaDefinition
+  }
+
+  interface VersionResultadoRepositoryInterface <<puerto>> {
+    +registrar(VersionResultado) int
+    +vigentePorMuestra(int) ?VersionResultado
+    +historialPorMuestra(int) VersionResultado[]
+    +obtenerPorId(int) ?VersionResultado
+  }
+}
+
+ContenidoResultado o-- TipoResultado
+MuestraSnapshot o-- EstadoAceptacion
+VersionResultado o-- ContenidoResultado
+PruebaDefinition o-- TipoResultado
+ValidadorContenidoResultado ..> PruebaDefinition
+ValidadorContenidoResultado ..> ContenidoResultado
+PoliticaIngresoResultado ..> MuestraSnapshot
+PoliticaIngresoResultado ..> VersionResultado
+PoliticaCorreccion ..> VersionResultado
+DomainRuleException <|-- PoliticaIngresoResultado : lanza excepciones tipadas
+VersionResultadoRepositoryInterface ..> VersionResultado
+MuestraReaderInterface ..> MuestraSnapshot
+PruebaReaderInterface ..> PruebaDefinition
+@enduml

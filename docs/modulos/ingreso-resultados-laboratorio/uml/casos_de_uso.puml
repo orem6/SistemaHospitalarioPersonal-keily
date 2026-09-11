@@ -1,0 +1,34 @@
+@startuml casos_de_uso
+title Casos de uso — Ingreso de resultados de laboratorio (Etapa 2)
+left to right direction
+
+actor "Técnico de Laboratorio" as Tec
+actor "Sistema (recepción\nsemana 2)" as Rec #lightgrey
+
+rectangle "Módulo resultados v2 (/api/v1/lab-results/v2)" {
+  usecase "Consultar pendientes\nde captura" as UC1
+  usecase "Ingresar resultado\n(versión 1)" as UC2
+  usecase "Corregir resultado\n(versión n+1, motivo)" as UC3
+  usecase "Consultar historial\nde versiones" as UC4
+  usecase "Validar tipo y unidad\ncontra la prueba" as UC5
+  usecase "Verificar muestra\nACEPTADA" as UC6
+}
+
+Tec --> UC1
+Tec --> UC2
+Tec --> UC3
+Tec --> UC4
+
+UC2 ..> UC6 : <<include>>
+UC3 ..> UC6 : <<include>>
+UC2 ..> UC5 : <<include>>
+UC3 ..> UC5 : <<include>>
+
+Rec .> UC6 : provee\nacceptance_status
+
+note bottom of UC3
+  La corrección NUNCA sobrescribe:
+  crea versión nueva conservando
+  el historial completo.
+end note
+@enduml
