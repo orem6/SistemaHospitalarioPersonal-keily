@@ -1,0 +1,12 @@
+@startsalt
+{+
+{* Pendientes | TecnicoLab | 320-430 px }
+BC-EVD-...
+Hemoglobina
+NUMERICO | Unidad: g/dL
+[ Capturar resultado ]
+--
+Estado vacio: "No hay muestras aceptadas pendientes." [Recargar]
+Foco visible; tarjetas, no tabla horizontal.
+}
+@endsalt

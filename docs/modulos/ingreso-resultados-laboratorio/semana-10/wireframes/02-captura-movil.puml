@@ -1,0 +1,13 @@
+@startsalt
+{+
+{* Captura | TecnicoLab }
+BC-EVD-... | Hemoglobina
+Tipo esperado: NUMERICO
+Valor numerico: [             ]
+Unidad canonica: [g/dL        ]
+Errores: "Revise el valor y la unidad."
+[ Guardar resultado ]
+[ Ver historial ] [ Cancelar ]
+No mostrar paciente, rango ni banderas no expuestas.
+}
+@endsalt

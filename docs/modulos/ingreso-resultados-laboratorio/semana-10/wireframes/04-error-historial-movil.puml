@@ -1,0 +1,12 @@
+@startsalt
+{+
+{* Solicitud incierta | TecnicoLab }
+"No se confirmo si se guardo la correccion."
+"No reintente automaticamente."
+[ Consultar historial ]
+[ Conservar borrador local ]
+--
+Historial: vigente v3 | versiones v1, v2, v3
+404: volver a pendientes; 422: foco al campo.
+}
+@endsalt
