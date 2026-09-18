@@ -1,0 +1,28 @@
+@startuml
+title ASII-19 Semana 6 - trazabilidad de defensa
+left to right direction
+skinparam componentStyle rectangle
+
+actor TecnicoLab
+rectangle "RF-01 Pendientes\nRF-02 Captura\nRF-03 Correccion\nRF-07 Tenant" as rf
+component "LabResultV2Controller" as ctl
+component "Use cases\nIngresar / Corregir" as app
+component "Domain\nPoliticas + Contenido" as domain
+interface "Muestra / Prueba / Version\nports" as ports
+database "lab_result_versions\nappend-only" as db
+artifact "VersionedResultsFlowTest" as test
+
+TecnicoLab --> ctl : JWT + X-Tenant-ID
+rf --> ctl
+ctl --> app
+app --> domain
+domain --> ports
+ports --> db
+test ..> ctl : evidencia HTTP
+test ..> db : v1 intacta, v2 creada
+
+note bottom of db
+  Cambio defendido:
+  persistir entered_by desde JWT
+end note
+@enduml
