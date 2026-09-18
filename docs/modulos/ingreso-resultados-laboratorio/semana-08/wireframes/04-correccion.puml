@@ -1,0 +1,13 @@
+@startsalt
+{+
+{* Corregir resultado | TecnicoLab }
+Vigente: v2 | Tipo: NUMERICO | Unidad: g/dL
+Nuevo valor: [             ]
+Motivo (10-500): [                         ]
+[Cancelar] [Validar y confirmar correccion]
+--
+"La correccion creara v3; v2 se conserva."
+Error: "El contenido debe cambiar."
+Accesible: contador y error de motivo enlazado al campo.
+}
+@endsalt
