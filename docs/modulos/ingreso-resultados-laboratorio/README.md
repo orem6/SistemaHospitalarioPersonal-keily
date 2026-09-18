@@ -15,6 +15,9 @@
 | Semana 6: cambio practico | [semana-06/cambio-practico.md](./semana-06/cambio-practico.md) |
 | Semana 6: guion y preguntas | [semana-06/guion-y-preguntas.md](./semana-06/guion-y-preguntas.md) |
 | Semana 6: diagrama trazable | [semana-06/uml/trazabilidad-defensa.puml](./semana-06/uml/trazabilidad-defensa.puml) |
+| Semana 7: componentes y contratos | [semana-07/contratos_componentes.md](./semana-07/contratos_componentes.md) |
+| Semana 7: refactor preventivo | [semana-07/refactor_antes_despues.md](./semana-07/refactor_antes_despues.md) |
+| Semana 7: evidencia | [semana-07/evidencia_semana_07.md](./semana-07/evidencia_semana_07.md) |
 
 ## Diagramas UML (`uml/`, fuentes PlantUML editables)
 

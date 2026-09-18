@@ -1,0 +1,30 @@
+@startuml
+title ASII-19 Semana 7 - componentes y dependencias permitidas
+skinparam componentStyle rectangle
+
+actor "TecnicoLab" as tech
+component "UI conceptual\nPendingResults, EntryForm,\nCorrectionForm, History, Feedback" as ui
+component "API v2\nLabResultV2Controller" as api
+component "Application\nListar, Ingresar, Corregir, Historial" as app
+component "Domain\nContenido, Version, Politicas, Validador" as domain
+interface "MuestraReader\nPruebaReader\nVersionRepository" as ports
+component "Eloquent adapters\nTransactionManager" as infra
+database "samples, lab_tests,\nlab_result_versions" as db
+
+tech --> ui
+ui --> api : JWT + X-Tenant-ID
+api --> app : commands / response JSON
+app --> domain
+app --> ports
+infra -up-|> ports
+infra --> db
+
+note right of domain
+ Prohibido: HTTP, Laravel,
+ Eloquent o SQL
+end note
+note right of api
+ Prohibido: reglas clinicas
+ y SQL
+end note
+@enduml
