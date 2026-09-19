@@ -21,6 +21,8 @@
 | Semana 8: reglas UX | [semana-08/reglas_interaccion.md](./semana-08/reglas_interaccion.md) |
 | Semana 8: estados y mensajes | [semana-08/estados_y_mensajes.md](./semana-08/estados_y_mensajes.md) |
 | Semana 8: evidencia UX | [semana-08/evidencia_semana_08.md](./semana-08/evidencia_semana_08.md) |
+| Semana 9: checklist UX/accesibilidad | [semana-09/checklist_usabilidad_accesibilidad.md](./semana-09/checklist_usabilidad_accesibilidad.md) |
+| Semana 9: hallazgos y backlog | [semana-09/hallazgos_semana_09.md](./semana-09/hallazgos_semana_09.md) y [backlog_ux.md](./semana-09/backlog_ux.md) |
 
 ## Diagramas UML (`uml/`, fuentes PlantUML editables)
 
