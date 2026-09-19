@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASII-19 | Prototipo de resultados</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#526079; --line:#c8d2e1; --blue:#0756b5; --blue-soft:#e7f0ff; --green:#146c43; --green-soft:#ddf6e8; --red:#b42318; --red-soft:#ffebe9; --paper:#f6f8fc; }
+    * { box-sizing:border-box; } body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    button,input,textarea { font:inherit; } button { cursor:pointer; min-height:44px; border-radius:8px; border:1px solid var(--blue); padding:.55rem .85rem; font-weight:700; }
+    button:disabled { cursor:wait; opacity:.7; } button.primary { background:var(--blue); color:#fff; } button.secondary { background:#fff; color:var(--blue); } button.danger { background:var(--red); color:#fff; border-color:var(--red); }
+    a { color:var(--blue); } :focus-visible { outline:3px solid #f5a623; outline-offset:3px; }
+    .shell { max-width:1060px; margin:auto; padding:24px; } .masthead { display:flex; justify-content:space-between; gap:1rem; align-items:start; border-bottom:1px solid var(--line); padding-bottom:16px; }
+    .eyebrow,.role { display:inline-block; margin:0 0 .35rem; color:#064b9e; font-size:.82rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }.role { padding:.2rem .5rem; background:var(--blue-soft); border-radius:999px; }
+    h1 { margin:.1rem 0; font-size:clamp(1.55rem,4vw,2.2rem); line-height:1.15; } h2 { font-size:1.15rem; margin-top:0; } .muted { color:var(--muted); }.screen { margin-top:22px; }
+    .card,.notice,.field { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:14px; }.card-head,.actions,.meta { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; }.card-head { justify-content:space-between; }.actions { margin-top:18px; }.meta { color:var(--muted); font-size:.92rem; }.pill { padding:.2rem .55rem; border-radius:999px; font-size:.83rem; font-weight:700; background:var(--blue-soft); color:#064b9e; }.success { border-color:var(--green); background:var(--green-soft); }.error { border-color:var(--red); background:var(--red-soft); }.notice p { margin:.35rem 0; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }.field label { display:block; font-weight:750; margin-bottom:.35rem; }.field input,.field textarea { width:100%; border:1px solid #71809a; border-radius:7px; padding:.65rem; background:#fff; }.field input[readonly] { background:#edf1f7; }.help { color:var(--muted); font-size:.9rem; margin:.4rem 0 0; }.error-text { color:var(--red); font-weight:700; }.range { border-left:4px solid #71809a; padding:.75rem 1rem; background:#eef2f7; margin:14px 0; }.history li { padding:.75rem 0; border-bottom:1px solid var(--line); }.history strong { display:block; }.skip { position:absolute; left:-999px; }.skip:focus { left:12px; top:12px; z-index:3; background:#fff; padding:.6rem; }
+    @media (max-width:600px) { .shell { padding:16px; }.masthead { align-items:flex-start; flex-direction:column; }.grid { grid-template-columns:1fr; }.actions { flex-direction:column; align-items:stretch; }.actions button { width:100%; }.card { padding:15px; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#screen">Saltar al contenido</a>
+  <main class="shell">
+    <header class="masthead"><div><p class="eyebrow">ASII-19 / prototipo navegable</p><h1>Ingreso de resultados</h1><p class="muted">Datos ficticios. Prototipo sin conexion con la API.</p></div><span class="role">TecnicoLab</span></header>
+    <section id="screen" class="screen" aria-live="polite"></section>
+  </main>
+  <script>
+    const screen = document.querySelector('#screen');
+    const sample = { barcode:'BC-EVD-000002', test:'Hemoglobina', unit:'g/dL', value:'13.5' };
+    const queryView = new URLSearchParams(location.search).get('vista');
+    const state = { view:queryView || 'pendientes', value:queryView ? sample.value : '', reason:queryView ? 'Error de transcripcion del analizador.' : '', hasV2:queryView === 'historial-v2' };
+    const heading = (title, text) => `<header><p class="eyebrow">Flujo principal</p><h2 id="view-title" tabindex="-1">${title}</h2><p class="muted">${text}</p></header>`;
+    const sampleMeta = () => `<div class="meta"><span>${sample.barcode}</span><span>${sample.test}</span><span>NUMERICO</span><span>Unidad: ${sample.unit}</span></div>`;
+    function show(html) { screen.innerHTML = html; requestAnimationFrame(() => document.querySelector(state.focus || '#view-title')?.focus()); state.focus = ''; }
+    function render() {
+      if (state.view === 'pendientes') return show(`${heading('Resultados pendientes','Muestras aceptadas sin versiones de resultado.')}
+        <article class="card"><div class="card-head"><div><span class="pill">Pendiente de captura</span><h3>${sample.test}</h3></div><button class="primary" data-go="captura">Capturar resultado</button></div>${sampleMeta()}<p class="help">La etiqueta describe la cola; no representa un estado clinico de validacion.</p></article>
+        <aside class="range"><strong>Rango de referencia</strong><br>No disponible en la API v2; el prototipo no inventa rangos ni banderas clinicas.</aside>`);
+      if (state.view === 'captura') return capture();
+      if (state.view === 'exito') return show(`${heading('Resultado ingresado','La respuesta simulada equivale a un 201 del contrato v2.')}
+        <section class="notice success" role="status"><strong>Resultado ingresado como version 1.</strong><p>${sample.test}: ${state.value} ${sample.unit}. No se asume validacion clinica.</p></section>${sampleMeta()}
+        <div class="actions"><button class="primary" data-go="historial">Ver historial y versiones</button><button class="secondary" data-go="pendientes">Volver a pendientes</button></div>`);
+      if (state.view === 'historial' || state.view === 'historial-v2') return history();
+      if (state.view === 'correccion') return correction();
+      if (state.view === 'confirmar') return confirm();
+      if (state.view === 'incierto') return uncertain();
+    }
+    function capture() { const error = state.error === 'captura'; return show(`${heading('Capturar resultado','Ingrese el valor solicitado. La unidad canonica no se puede sustituir.')}
+      ${error ? `<section class="notice error" id="error-summary" role="alert" tabindex="-1"><strong>Revise el valor.</strong> <a href="#numeric-value" data-focus="numeric-value">Ir al campo invalido</a>.</section>` : ''}
+      <form id="capture-form"><div class="grid"><div class="field"><label for="numeric-value">Valor numerico</label><input id="numeric-value" name="value" inputmode="decimal" aria-describedby="value-help ${error ? 'value-error' : ''}" value="${state.value}">${error ? '<p id="value-error" class="error-text">Ingrese un numero finito.</p>' : ''}<p id="value-help" class="help">Tipo esperado: NUMERICO.</p></div><div class="field"><label for="unit">Unidad canonica</label><input id="unit" value="${sample.unit}" readonly><p class="help">La API exige la unidad de la prueba.</p></div></div><aside class="range"><strong>Rango de referencia</strong><br>No disponible en API v2.</aside><div class="actions"><button class="primary" type="submit">Guardar resultado</button><button class="secondary" type="button" data-go="pendientes">Cancelar</button></div></form>`); }
+    function history() { const v2 = state.hasV2; return show(`${heading('Historial y version vigente','Consulta disponible para usuario autenticado; la escritura requiere TecnicoLab.')}
+      ${sampleMeta()}<ol class="card history"><li><strong>V1 vigente${v2 ? '' : ''}: ${state.value || sample.value} ${sample.unit}</strong>Resultado inicial${v2 ? '; conservado sin cambios.' : '.'}</li>${v2 ? `<li><strong>V2 vigente: 15.1 ${sample.unit}</strong>Correccion: Error de transcripcion del analizador.</li>` : ''}</ol>
+      ${v2 ? `<section class="notice success" role="status"><strong>La correccion ya se registro como v2.</strong><p>No reenvie el PATCH.</p></section>` : '<div class="actions"><button class="primary" data-go="correccion">Corregir resultado</button></div>'}<div class="actions"><button class="secondary" data-go="pendientes">Volver a pendientes</button></div>`); }
+    function correction() { const error = state.error === 'correccion'; return show(`${heading('Corregir resultado','La correccion crea v2 y conserva v1. El motivo queda en el historial.')}
+      ${error ? `<section class="notice error" id="error-summary" role="alert" tabindex="-1"><strong>No se puede continuar.</strong> <a href="#reason" data-focus="reason">Revise el motivo</a>.</section>` : ''}<form id="correction-form"><div class="card"><strong>V1 vigente: ${state.value || sample.value} ${sample.unit}</strong>${sampleMeta()}</div><div class="grid"><div class="field"><label for="new-value">Nuevo valor numerico</label><input id="new-value" name="value" inputmode="decimal" value="${state.value || '15.1'}"><p class="help">Debe diferir del valor vigente.</p></div><div class="field"><label for="reason">Motivo de correccion</label><textarea id="reason" name="reason" rows="3" aria-describedby="reason-help ${error ? 'reason-error' : ''}">${state.reason}</textarea>${error ? '<p id="reason-error" class="error-text">Escriba entre 10 y 500 caracteres.</p>' : ''}<p id="reason-help" class="help">Ejemplo: Error de transcripcion del analizador.</p></div></div><div class="actions"><button id="continue-confirmation" class="primary" type="submit">Continuar a confirmacion</button><button class="secondary" type="button" data-go="historial">Cancelar</button></div></form>`); }
+    function confirm() { return show(`${heading('Confirmar correccion','Revise antes de crear una nueva version.')}
+      <section class="card"><p><strong>V1 vigente:</strong> ${state.value || sample.value} ${sample.unit}</p><p><strong>Nueva V2:</strong> 15.1 ${sample.unit}</p><p><strong>Motivo:</strong> ${state.reason}</p><p class="help">La version anterior se conservara. Escape vuelve a editar sin escribir.</p></section><div class="actions"><button class="danger" data-go="incierto">Confirmar nueva version</button><button class="secondary" data-go="correccion">Volver a editar</button></div>`); }
+    function uncertain() { return show(`${heading('Solicitud incierta','Se perdio la respuesta despues de enviar la correccion.')}
+      <section class="notice error" role="alert"><strong>No se confirmo si se guardo la correccion.</strong><p>PATCH no es idempotente: no se reintenta automaticamente para evitar crear otra version.</p></section><div class="actions"><button class="primary" data-go="historial-v2">Consultar historial</button><button class="secondary" data-go="correccion">Conservar borrador y volver a editar</button></div>`); }
+    document.addEventListener('click', event => { const go = event.target.closest('[data-go]'); const focus = event.target.closest('[data-focus]'); if (go) { state.view = go.dataset.go; state.error = ''; if (state.view === 'historial-v2') state.hasV2 = true; render(); } if (focus) { event.preventDefault(); document.querySelector('#' + focus.dataset.focus)?.focus(); } });
+    document.addEventListener('submit', event => { event.preventDefault(); const form = event.target; const value = form.elements.value?.value.trim(); if (form.id === 'capture-form') { state.value = value; state.error = Number.isFinite(Number(value)) && value !== '' ? '' : 'captura'; state.view = state.error ? 'captura' : 'exito'; } else { state.value = value; state.reason = form.elements.reason.value.trim(); state.error = state.reason.length >= 10 && state.reason.length <= 500 ? '' : 'correccion'; state.view = state.error ? 'correccion' : 'confirmar'; } render(); if (state.error) requestAnimationFrame(() => document.querySelector('#error-summary')?.focus()); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && state.view === 'confirmar') { state.view = 'correccion'; state.focus = '#continue-confirmation'; render(); } });
+    render();
+  </script>
+</body>
+</html>
