@@ -1,0 +1,13 @@
+@startsalt
+{+
+{* Resultados pendientes | Rol: TecnicoLab }
+[Buscar por barcode (solo filtro local)]
+{# | Muestra | Prueba | Tipo | Unidad | Acción }
+{ | BC-... | Hemoglobina | NUMERICO | g/dL | [Capturar] }
+[Recargar pendientes]
+--
+Estado vacio: "No hay muestras aceptadas pendientes."
+Ayuda: "Solo se muestran muestras aceptadas sin version."
+Accesible: foco inicial en tabla; Enter abre Capturar.
+}
+@endsalt

@@ -18,6 +18,9 @@
 | Semana 7: componentes y contratos | [semana-07/contratos_componentes.md](./semana-07/contratos_componentes.md) |
 | Semana 7: refactor preventivo | [semana-07/refactor_antes_despues.md](./semana-07/refactor_antes_despues.md) |
 | Semana 7: evidencia | [semana-07/evidencia_semana_07.md](./semana-07/evidencia_semana_07.md) |
+| Semana 8: reglas UX | [semana-08/reglas_interaccion.md](./semana-08/reglas_interaccion.md) |
+| Semana 8: estados y mensajes | [semana-08/estados_y_mensajes.md](./semana-08/estados_y_mensajes.md) |
+| Semana 8: evidencia UX | [semana-08/evidencia_semana_08.md](./semana-08/evidencia_semana_08.md) |
 
 ## Diagramas UML (`uml/`, fuentes PlantUML editables)
 

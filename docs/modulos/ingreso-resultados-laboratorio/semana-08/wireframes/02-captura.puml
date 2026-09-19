@@ -1,0 +1,15 @@
+@startsalt
+{+
+{* Capturar resultado | TecnicoLab }
+Muestra: BC-... | Prueba: Hemoglobina
+Tipo esperado: NUMERICO | Unidad canonica: g/dL
+Valor numerico: [             ]
+Valor texto: [deshabilitado]
+Unidad: [g/dL                 ]
+[Cancelar] [Validar y confirmar]
+--
+Error asociado: "Ingrese un numero valido."
+Privacidad: no mostrar paciente ni historia clinica.
+Accesible: label por campo, Tab secuencial, error anunciado.
+}
+@endsalt

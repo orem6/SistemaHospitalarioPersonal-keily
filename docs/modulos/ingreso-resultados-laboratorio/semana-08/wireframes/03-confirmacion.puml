@@ -1,0 +1,13 @@
+@startsalt
+{+
+{* Confirmar captura | TecnicoLab }
+Muestra: BC-... | Tipo: NUMERICO
+Valor: 13.5 | Unidad: g/dL
+"Se creara la version 1. Revise antes de guardar."
+[Volver a editar] [Guardar resultado]
+--
+Exito: "Resultado ingresado como version 1."
+Recuperable: "No se pudo guardar. Reintente; no duplique si recibe 409."
+Accesible: foco en titulo; confirmacion no depende solo de color.
+}
+@endsalt

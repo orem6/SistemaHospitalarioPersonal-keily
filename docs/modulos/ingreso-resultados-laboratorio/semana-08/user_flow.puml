@@ -1,0 +1,31 @@
+@startuml
+title ASII-19 Semana 8 - flujo UX TecnicoLab
+start
+:Abrir pendientes;
+if (JWT, tenant y rol TecnicoLab?) then (si)
+  if (Hay muestras aceptadas sin version?) then (si)
+    :Seleccionar muestra;
+    :Capturar tipo, valor y unidad;
+    if (Validacion local y servidor?) then (valido)
+      :Confirmar datos minimizados;
+      :POST resultado;
+      if (201?) then (si)
+        :Exito; volver a pendientes;
+      else (409/422/recuperable)
+        :Feedback, conservar formulario;
+      endif
+    else (invalido)
+      :Asociar error al campo;
+    endif
+  else (no)
+    :Estado vacio; recargar;
+  endif
+  :Historial JWT; seleccionar corregir si hay vigente;
+  :Ingresar motivo y nuevo contenido;
+  :Confirmar que crea nueva version;
+  :PATCH correccion; mostrar v(n+1) e historial;
+else (no)
+  :No autorizado / tenant invalido;
+endif
+stop
+@enduml

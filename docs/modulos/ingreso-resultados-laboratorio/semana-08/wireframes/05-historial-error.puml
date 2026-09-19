@@ -1,0 +1,14 @@
+@startsalt
+{+
+{* Historial de muestra | JWT autenticado }
+Vigente: v2 | BC-...
+{# | Version | Valor | Unidad | Motivo }
+{ | v1 | 13.5 | g/dL | - }
+{ | v2 | 15.1 | g/dL | Error de transcripcion }
+[Volver] [Solicitar correccion]
+--
+404: "Muestra no encontrada en el tenant actual."
+401/403: "No puede acceder. Inicie sesion o solicite autorizacion."
+500: "Error temporal. Conserve sus datos y reintente."
+}
+@endsalt
