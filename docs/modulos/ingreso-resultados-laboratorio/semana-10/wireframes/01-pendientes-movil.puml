@@ -1,12 +1,14 @@
 @startsalt
 {+
 {* Pendientes | TecnicoLab | 320-430 px }
+Pendiente de captura
 BC-EVD-...
 Hemoglobina
 NUMERICO | Unidad: g/dL
 [ Capturar resultado ]
 --
 Estado vacio: "No hay muestras aceptadas pendientes." [Recargar]
-Foco visible; tarjetas, no tabla horizontal.
+Carga: tarjetas esqueleto sin datos clinicos.
+Foco visible; tarjetas, no tabla horizontal; pendiente no es estado clinico.
 }
 @endsalt

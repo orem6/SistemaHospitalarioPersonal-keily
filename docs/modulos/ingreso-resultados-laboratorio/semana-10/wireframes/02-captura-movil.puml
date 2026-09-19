@@ -4,10 +4,12 @@
 BC-EVD-... | Hemoglobina
 Tipo esperado: NUMERICO
 Valor numerico: [             ]
-Unidad canonica: [g/dL        ]
-Errores: "Revise el valor y la unidad."
+Unidad canonica (solo lectura): g/dL
+Para TEXTO: mostrar valor texto y ocultar unidad.
+Errores: resumen role=alert enlaza valor/unidad; conserva lo valido.
 [ Guardar resultado ]
 [ Ver historial ] [ Cancelar ]
-No mostrar paciente, rango ni banderas no expuestas.
+Guardando: boton deshabilitado, anuncio de progreso.
+No mostrar paciente, rango ni banderas no interpretables expuestas.
 }
 @endsalt

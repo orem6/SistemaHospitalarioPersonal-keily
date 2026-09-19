@@ -7,6 +7,7 @@ Motivo: Error de transcripcion
 "La version v2 se conservara."
 [ Volver a editar ]
 [ Confirmar nueva version ]
-Escape cancela; foco inicia en titulo.
+Enviando: confirmar deshabilitado; un solo PATCH.
+Escape cancela; foco inicia en titulo y retorna al invocador al cerrar.
 }
 @endsalt
