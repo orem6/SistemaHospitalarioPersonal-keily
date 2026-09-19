@@ -10,6 +10,11 @@
 | Semana 5: contrato API real | [semana-05/01-contrato-api.md](./semana-05/01-contrato-api.md) |
 | Semana 5: integracion y frontera | [semana-05/02-integracion-y-frontera.md](./semana-05/02-integracion-y-frontera.md) |
 | Semana 5: plan Git manual | [semana-05/03-plan-git.md](./semana-05/03-plan-git.md) |
+| Semana 6: presentacion y defensa | [semana-06/presentacion.md](./semana-06/presentacion.md) |
+| Semana 6: matriz de evidencia | [semana-06/matriz-decision-evidencia.md](./semana-06/matriz-decision-evidencia.md) |
+| Semana 6: cambio practico | [semana-06/cambio-practico.md](./semana-06/cambio-practico.md) |
+| Semana 6: guion y preguntas | [semana-06/guion-y-preguntas.md](./semana-06/guion-y-preguntas.md) |
+| Semana 6: diagrama trazable | [semana-06/uml/trazabilidad-defensa.puml](./semana-06/uml/trazabilidad-defensa.puml) |
 
 ## Diagramas UML (`uml/`, fuentes PlantUML editables)
 
