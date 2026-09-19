@@ -1,0 +1,17 @@
+@startuml
+title ASII-19 Semana 11 - Mapa de navegacion del prototipo
+[*] --> Pendientes
+Pendientes : TecnicoLab\nMuestra ACEPTADA sin version
+Pendientes --> Captura : Capturar resultado
+Captura --> Error422 : Valor invalido
+Error422 --> Captura : Enlace y foco al campo
+Captura --> Exito : POST simulado / 201
+Exito --> Historial
+Historial --> Correccion : TecnicoLab
+Correccion --> Confirmacion : Motivo valido (10-500)
+Confirmacion --> Correccion : Volver a editar / Escape
+Confirmacion --> SolicitudIncierta : PATCH con respuesta perdida
+SolicitudIncierta --> HistorialV2 : Consultar historial
+HistorialV2 --> [*] : v2 existe; no reenviar
+Pendientes --> [*] : Volver
+@enduml
