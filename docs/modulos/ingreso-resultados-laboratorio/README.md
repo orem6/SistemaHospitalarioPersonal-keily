@@ -1,4 +1,4 @@
-# Índice de artefactos — Etapa 2 (orem6)
+# Índice de artefactos — Etapa 2 y Semana 5 (orem6)
 
 | Artefacto | Archivo |
 |---|---|
@@ -7,6 +7,9 @@
 | Evidencias obligatorias reproducibles | [EVIDENCIA.md](./EVIDENCIA.md) |
 | Declaración de uso de IA | [DECLARACION_IA.md](./DECLARACION_IA.md) |
 | Texto del Pull Request | [PULL_REQUEST.md](./PULL_REQUEST.md) |
+| Semana 5: contrato API real | [semana-05/01-contrato-api.md](./semana-05/01-contrato-api.md) |
+| Semana 5: integracion y frontera | [semana-05/02-integracion-y-frontera.md](./semana-05/02-integracion-y-frontera.md) |
+| Semana 5: plan Git manual | [semana-05/03-plan-git.md](./semana-05/03-plan-git.md) |
 
 ## Diagramas UML (`uml/`, fuentes PlantUML editables)
 
@@ -17,6 +20,7 @@
 5. `componentes.puml` — capas Presentation/Application/Domain/Infrastructure y puertos.
 6. `er_modelo.puml` — modelo de datos (tabla nueva + columnas aditivas).
 7. `estados.puml` — máquina de estados muestra/resultado versionado.
+8. `semana-05/uml/cliente-servidor-y-frontera.puml` — cliente-servidor y evaluacion de frontera futura.
 
 Generar imágenes: `plantuml uml/*.puml` (requiere [PlantUML](https://plantuml.com/) o la extensión VS Code).
 

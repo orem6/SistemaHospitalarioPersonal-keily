@@ -1,0 +1,33 @@
+@startuml
+title ASII-19 Semana 5 - cliente-servidor y frontera futura
+skinparam componentStyle rectangle
+
+actor "Cliente TecnicoLab" as client
+component "API v2\nJWT + X-Tenant-ID" as api
+component "LabResultV2Controller" as controller
+component "Application\nUse cases" as app
+component "Domain\nPolicies and ports" as domain
+component "Eloquent adapters\nDB transaction" as infra
+database "SHI PostgreSQL" as db
+
+client --> api : GET/POST/PATCH
+api --> controller
+controller --> app
+app --> domain
+domain --> infra
+infra --> db : samples, lab_tests\nlab_result_versions
+
+package "Future only: possible result service" {
+  component "Results API" as future
+  database "Results DB\nversion ownership" as futuredb
+  future --> futuredb
+}
+
+future ..> api : not implemented\nrequires contracts/outbox
+future ..> db : reference: sample, catalog, identity
+note right of future
+  Do not extract until ownership,
+  observability and measured need
+  justify distributed costs.
+end note
+@enduml
