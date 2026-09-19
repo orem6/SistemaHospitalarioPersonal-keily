@@ -1,0 +1,15 @@
+@startsalt
+{+
+{* Corregir resultado | TecnicoLab | 320-430 px }
+BC-EVD-... | Hemoglobina
+Vigente v2: 13.5 g/dL [ Ver historial ]
+Tipo esperado: NUMERICO
+Nuevo valor: [             ]
+Unidad canonica (solo lectura): g/dL
+Motivo (10-500): [                    ]
+Ayuda: El motivo quedara en el historial; v2 no se modifica.
+[ Continuar a confirmacion ]
+[ Cancelar ]
+Resumen de errores anunciado; no hay rangos expuestos.
+}
+@endsalt

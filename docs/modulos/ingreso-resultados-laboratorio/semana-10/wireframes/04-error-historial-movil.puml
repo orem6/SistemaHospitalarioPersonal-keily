@@ -1,0 +1,14 @@
+@startsalt
+{+
+{* Solicitud incierta | TecnicoLab }
+"No se confirmo si se guardo la correccion."
+"No reintente automaticamente."
+[ Consultar historial ]
+[ Conservar borrador local ]
+--
+Historial: vigente v3 | versiones v1, v2, v3
+Si v3 coincide con envio: no reenviar; informar exito previo.
+422: resumen y foco al campo; 404: volver a pendientes.
+401/403: autenticar o acceso no autorizado, sin datos clinicos.
+}
+@endsalt

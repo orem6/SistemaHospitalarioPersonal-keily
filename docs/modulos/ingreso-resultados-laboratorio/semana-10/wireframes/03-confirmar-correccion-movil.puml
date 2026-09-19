@@ -1,0 +1,13 @@
+@startsalt
+{+
+{* Confirmar correccion | TecnicoLab }
+Vigente v2: 13.5 g/dL
+Nueva v3: 15.1 g/dL
+Motivo: Error de transcripcion
+"La version v2 se conservara."
+[ Volver a editar ]
+[ Confirmar nueva version ]
+Enviando: confirmar deshabilitado; un solo PATCH.
+Escape cancela; foco inicia en titulo y retorna al invocador al cerrar.
+}
+@endsalt

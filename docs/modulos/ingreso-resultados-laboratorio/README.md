@@ -23,6 +23,7 @@
 | Semana 8: evidencia UX | [semana-08/evidencia_semana_08.md](./semana-08/evidencia_semana_08.md) |
 | Semana 9: checklist UX/accesibilidad | [semana-09/checklist_usabilidad_accesibilidad.md](./semana-09/checklist_usabilidad_accesibilidad.md) |
 | Semana 9: hallazgos y backlog | [semana-09/hallazgos_semana_09.md](./semana-09/hallazgos_semana_09.md) y [backlog_ux.md](./semana-09/backlog_ux.md) |
+| Semana 10: movilidad | [semana-10/responsive_semana_10.md](./semana-10/responsive_semana_10.md) y [breakpoints.md](./semana-10/breakpoints.md) |
 
 ## Diagramas UML (`uml/`, fuentes PlantUML editables)
 
